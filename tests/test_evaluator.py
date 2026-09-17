@@ -14,13 +14,7 @@ class MockLogger:
         self.logs.append(event_type)
 
 def test_evaluator_drowsiness():
-    # Setup mocks and thresholds
-    import src.config as config
-    config.EAR_THRESHOLD = 0.25
-    config.EAR_TIME_THRESHOLD = 1.0 # 1 second for faster test
-    config.MAR_THRESHOLD = 0.6
-    config.MAR_TIME_THRESHOLD = 1.0
-    
+    # Setup mocks
     alerter = MockAlerter()
     logger = MockLogger()
     evaluator = StateEvaluator(alerter, logger)
@@ -34,8 +28,8 @@ def test_evaluator_drowsiness():
     status = evaluator.evaluate(ear=0.2, mar=0.1, pitch=0.0, yaw=0.0)
     assert status == "Awake" # Not triggered yet due to time window
     
-    # Sleep to simulate time passing (just modifying the start_time is cleaner but this works)
-    evaluator.ear_start_time = time.time() - 2.0 # Force time threshold
+    # Simulate time passing by shifting the start time beyond the default 2.5s threshold
+    evaluator.ear_start_time = time.time() - 3.0 # Force time threshold
     
     status = evaluator.evaluate(ear=0.2, mar=0.1, pitch=0.0, yaw=0.0)
     assert status == "DROWSINESS DETECTED"
