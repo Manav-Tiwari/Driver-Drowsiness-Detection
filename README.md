@@ -58,6 +58,3 @@ Run the tests using `pytest`:
 ```bash
 pytest tests/
 ```
-
-## Screenshots
-*(Add screenshots of the UI showing "Awake", "DROWSINESS DETECTED", and the printed metrics on the frame here prior to submission).*
